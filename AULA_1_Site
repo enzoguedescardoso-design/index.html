@@ -1,0 +1,19 @@
+!DOCTYPE html>
+<html>
+<head>
+    <title>Informação útil</title>
+    <link rel="stylesheet" href="AULA_1_Sites_PT2.css">
+    <title>capivaras</title>
+</head>
+<body>
+    <h1>capivaras são amigas</h1>
+    <p>capivaras são amigas de todos os animais, elas utilizam o jacaré como ubar também</p>
+    <h2>capivaras representam uma parte do Brasil</h2>
+             <ul>
+                   <li>além do cachorro caramelo,ela é icônica no Brasil</li>
+                   <li>ela e o caramelo estão no top 1 de animais mais famosos do Brasil</li>
+             </ul>
+     <img src="https://www.infoescola.com/wp-content/uploads/2008/05/capivara-104462285.jpg" alt="image 1">
+    
+</body>
+</html>
