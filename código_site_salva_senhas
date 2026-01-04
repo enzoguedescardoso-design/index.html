@@ -1,0 +1,74 @@
+# Importações
+from flask import Flask, render_template, request, redirect
+from flask_sqlalchemy import SQLAlchemy
+
+# Inicializando o app
+app = Flask(__name__)
+
+# Configuração do SQLite
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///diary.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Inicializando o banco de dados
+db = SQLAlchemy(app)
+
+# ==============================
+# MODELO DO BANCO DE DADOS
+# ==============================
+class Card(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    subtitle = db.Column(db.String(100), nullable=False)
+    text = db.Column(db.String(500), nullable=False)
+
+    def __repr__(self):
+        return f'<Card {self.id}>'
+
+# ==============================
+# CRIAÇÃO DO BANCO E TABELAS
+# ==============================
+with app.app_context():
+    db.create_all()
+
+# ==============================
+# ROTAS
+# ==============================
+
+# Página inicial
+@app.route('/')
+def index():
+    cards = Card.query.order_by(Card.id).all()
+    return render_template('index.html', cards=cards)
+
+# Página de um cartão específico
+@app.route('/card/<int:id>')
+def card(id):
+    card = Card.query.get_or_404(id)
+    return render_template('card.html', card=card)
+
+# Página de criação
+@app.route('/create')
+def create():
+    return render_template('create_card.html')
+
+# Formulário de criação
+@app.route('/form_create', methods=['GET', 'POST'])
+def form_create():
+    if request.method == 'POST':
+        title = request.form['title']
+        subtitle = request.form['subtitle']
+        text = request.form['text']
+
+        new_card = Card(title=title, subtitle=subtitle, text=text)
+        db.session.add(new_card)
+        db.session.commit()
+
+        return redirect('/')
+    
+    return render_template('create_card.html')
+
+# ==============================
+# EXECUÇÃO
+# ==============================
+if __name__ == "__main__":
+    app.run(debug=True)
